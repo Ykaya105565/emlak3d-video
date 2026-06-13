@@ -1,0 +1,25 @@
+{
+  "name": "emlak-render-worker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "render:interior": "node src/threejs/interior_walk.js",
+    "render:exterior": "node src/cesium/exterior_shot.js"
+  },
+  "dependencies": {
+    "remotion": "^4.0.185",
+    "@remotion/bundler": "^4.0.185",
+    "@remotion/renderer": "^4.0.185",
+    "@remotion/cli": "^4.0.185",
+    "three": "^0.165.0",
+    "puppeteer": "^22.11.0",
+    "express": "^4.19.2",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
+  }
+}

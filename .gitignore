@@ -1,0 +1,89 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.so
+*.dylib
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+*.env.local
+credentials/
+*.json.key
+google-service-account.json
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.yarn/
+
+# Build outputs
+frontend/dist/
+frontend/build/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+.vs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker volumes (local)
+pgdata/
+miniodata/
+
+# Render outputs
+output/
+/tmp/
+render-tmp/
+
+# Logs
+*.log
+logs/
+
+# Alembic temp
+backend/alembic/versions/__pycache__/
+
+# Test cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Sample / private GML dosyaları (gerçek tapu verileri)
+data/sample/*.gml
+data/sample/*.json
+!data/sample/.gitkeep
+
+# MinIO uploads
+data/uploads/
+
+# Audio/video üretim çıktıları
+*.mp3
+*.wav
+*.mp4
+!render/assets/music/.gitkeep

@@ -6,6 +6,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ListingFormPage from "./pages/ListingFormPage";
 import ListingDetailPage from "./pages/ListingDetailPage";
 import VideoStudioPage from "./pages/VideoStudioPage";
+import DemoPage from "./pages/DemoPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -49,6 +50,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      {/* Demo sayfası — auth gerektirmez */}
+      <Route path="/demo" element={<DemoPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

@@ -500,23 +500,47 @@ def generate_frames(
 ) -> list[str]:
     """
     Tüm kare dizisini üret ve dosyalara yaz.
+
+    Birincil yol  : 3D perspektif renderer (polygon_local_m verisi varsa)
+    Fallback yolu : 2D kat planı (polygon verisi yoksa)
+
     Döndürür: PNG dosya yollarının listesi.
     """
     if not HAS_PIL:
         raise RuntimeError("Pillow kurulu değil: pip install Pillow")
 
+    rooms = inventory.get("rooms", [])
+    has_3d = any(len(r.get("polygon_local_m", [])) >= 3 for r in rooms)
+
+    if has_3d:
+        # ── 3D Perspektif Yol ──────────────────────────────────────────────────
+        logger.info("3D perspektif renderer etkin (polygon_local_m mevcut)")
+        try:
+            from render.src.video.renderer_3d import generate_3d_frames
+            return generate_3d_frames(
+                inventory=inventory,
+                output_dir=output_dir,
+                duration_seconds=duration_seconds,
+                fps=fps,
+                progress_callback=progress_callback,
+            )
+        except Exception as e:
+            logger.warning(f"3D renderer başarısız, 2D fallback kullanılıyor: {e}")
+
+    # ── 2D Fallback Yol ────────────────────────────────────────────────────────
+    logger.info("2D kat planı renderer (fallback)")
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
 
-    gen = FrameGenerator(inventory, duration_seconds, fps)
+    gen   = FrameGenerator(inventory, duration_seconds, fps)
     total = gen.total_frames
     paths = []
 
-    logger.info(f"Kare üretimi başlıyor: {total} kare ({duration_seconds}s @ {fps}fps)")
+    logger.info(f"2D kare üretimi: {total} kare ({duration_seconds}s @ {fps}fps)")
 
     for i in range(total):
         frame_img = gen.render_frame(i)
-        fpath = str(out / f"frame_{i:05d}.png")
+        fpath     = str(out / f"frame_{i:05d}.png")
         frame_img.save(fpath, "PNG", optimize=False)
         paths.append(fpath)
 
@@ -526,5 +550,5 @@ def generate_frames(
             if progress_callback:
                 progress_callback(pct, i + 1, total)
 
-    logger.info(f"Kare üretimi tamamlandı: {len(paths)} dosya → {out}")
+    logger.info(f"2D kare üretimi tamamlandı: {len(paths)} dosya → {out}")
     return paths
